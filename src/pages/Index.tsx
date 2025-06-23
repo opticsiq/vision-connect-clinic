@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Eye, Users, Calendar, FileText, Settings, Bell, Plus, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
-
 type UserRole = "ophthalmologist" | "optometrist" | null;
 type User = {
   id: string;
@@ -16,7 +15,6 @@ type User = {
   email: string;
   role: UserRole;
 };
-
 type Patient = {
   id: string;
   name: string;
@@ -25,7 +23,6 @@ type Patient = {
   notes?: string;
   createdAt: Date;
 };
-
 type Examination = {
   id: string;
   patientId: string;
@@ -39,9 +36,10 @@ type Examination = {
   };
   doctorId: string;
 };
-
 const Index = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isSignUp, setIsSignUp] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -57,34 +55,32 @@ const Index = () => {
     const password = formData.get("password") as string;
     const name = formData.get("name") as string;
     const role = formData.get("role") as UserRole;
-
     if (isSignUp) {
       const newUser: User = {
         id: Date.now().toString(),
         name: name || email.split("@")[0],
         email,
-        role: role || "optometrist",
+        role: role || "optometrist"
       };
       setCurrentUser(newUser);
       toast({
         title: "Account created successfully!",
-        description: `Welcome, ${newUser.name}`,
+        description: `Welcome, ${newUser.name}`
       });
     } else {
       const mockUser: User = {
         id: "1",
         name: "Dr. Sarah Johnson",
         email,
-        role: "ophthalmologist",
+        role: "ophthalmologist"
       };
       setCurrentUser(mockUser);
       toast({
         title: "Welcome back!",
-        description: `Signed in as ${mockUser.name}`,
+        description: `Signed in as ${mockUser.name}`
       });
     }
   };
-
   const addPatient = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -94,20 +90,18 @@ const Index = () => {
       age: parseInt(formData.get("patientAge") as string),
       phone: formData.get("patientPhone") as string,
       notes: formData.get("patientNotes") as string,
-      createdAt: new Date(),
+      createdAt: new Date()
     };
     setPatients([...patients, newPatient]);
     toast({
       title: "Patient added successfully!",
-      description: `${newPatient.name} has been added to your patient list.`,
+      description: `${newPatient.name} has been added to your patient list.`
     });
     e.currentTarget.reset();
   };
-
   const addExamination = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedPatient) return;
-    
     const formData = new FormData(e.currentTarget);
     const newExam: Examination = {
       id: Date.now().toString(),
@@ -118,29 +112,25 @@ const Index = () => {
         visualAcuity: formData.get("visualAcuity") as string,
         iop: formData.get("iop") as string,
         prescription: formData.get("prescription") as string,
-        notes: formData.get("examNotes") as string,
+        notes: formData.get("examNotes") as string
       },
-      doctorId: currentUser?.id || "",
+      doctorId: currentUser?.id || ""
     };
     setExaminations([...examinations, newExam]);
     toast({
       title: "Examination recorded!",
-      description: `New ${newExam.type} examination added for ${selectedPatient.name}.`,
+      description: `New ${newExam.type} examination added for ${selectedPatient.name}.`
     });
     e.currentTarget.reset();
   };
-
   if (!currentUser) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    return <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+            <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center bg-slate-50">
               <Eye className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              Optometry Clinic
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">OPTI CLINIC</CardTitle>
             <p className="text-gray-600 dark:text-gray-400">Professional Vision Care Management</p>
           </CardHeader>
           <CardContent>
@@ -149,9 +139,7 @@ const Index = () => {
             </div>
             <Tabs value={isSignUp ? "signup" : "signin"} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin" onClick={() => setIsSignUp(false)}>
-                  Sign In
-                </TabsTrigger>
+                <TabsTrigger value="signin" onClick={() => setIsSignUp(false)}>Log in</TabsTrigger>
                 <TabsTrigger value="signup" onClick={() => setIsSignUp(true)}>
                   Sign Up
                 </TabsTrigger>
@@ -207,12 +195,9 @@ const Index = () => {
             </Tabs>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+  return <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -232,12 +217,7 @@ const Index = () => {
                   {currentUser.role === "ophthalmologist" ? "👨‍⚕️" : "🧑‍⚕️"}
                 </span>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentUser(null)}
-                className="border-gray-300 dark:border-gray-600"
-              >
+              <Button variant="outline" size="sm" onClick={() => setCurrentUser(null)} className="border-gray-300 dark:border-gray-600">
                 Sign Out
               </Button>
             </div>
@@ -248,26 +228,26 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation */}
         <div className="flex space-x-1 mb-8">
-          {[
-            { id: "dashboard", label: "Dashboard", icon: Calendar },
-            { id: "patients", label: "Patients", icon: Users },
-            { id: "examinations", label: "Examinations", icon: FileText },
-          ].map((tab) => (
-            <Button
-              key={tab.id}
-              variant={currentView === tab.id ? "default" : "ghost"}
-              onClick={() => setCurrentView(tab.id as any)}
-              className="flex items-center space-x-2"
-            >
+          {[{
+          id: "dashboard",
+          label: "Dashboard",
+          icon: Calendar
+        }, {
+          id: "patients",
+          label: "Patients",
+          icon: Users
+        }, {
+          id: "examinations",
+          label: "Examinations",
+          icon: FileText
+        }].map(tab => <Button key={tab.id} variant={currentView === tab.id ? "default" : "ghost"} onClick={() => setCurrentView(tab.id as any)} className="flex items-center space-x-2">
               <tab.icon className="w-4 h-4" />
               <span>{tab.label}</span>
-            </Button>
-          ))}
+            </Button>)}
         </div>
 
         {/* Dashboard View */}
-        {currentView === "dashboard" && (
-          <div className="space-y-6">
+        {currentView === "dashboard" && <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 Welcome back, {currentUser.name}!
@@ -318,45 +298,29 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentView("patients")}
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                  >
+                  <Button variant="outline" onClick={() => setCurrentView("patients")} className="h-20 flex flex-col items-center justify-center space-y-2">
                     <Plus className="w-6 h-6" />
                     <span className="text-sm">Add Patient</span>
                   </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentView("examinations")}
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                  >
+                  <Button variant="outline" onClick={() => setCurrentView("examinations")} className="h-20 flex flex-col items-center justify-center space-y-2">
                     <FileText className="w-6 h-6" />
                     <span className="text-sm">New Exam</span>
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                  >
+                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
                     <Search className="w-6 h-6" />
                     <span className="text-sm">Search Records</span>
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                  >
+                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
                     <Settings className="w-6 h-6" />
                     <span className="text-sm">Settings</span>
                   </Button>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        )}
+          </div>}
 
         {/* Patients View */}
-        {currentView === "patients" && (
-          <div className="space-y-6">
+        {currentView === "patients" && <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Patient Management</h2>
             </div>
@@ -398,15 +362,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
-                    {patients.length === 0 ? (
-                      <p className="text-gray-500 dark:text-gray-400 text-sm">No patients added yet</p>
-                    ) : (
-                      patients.map((patient) => (
-                        <div
-                          key={patient.id}
-                          className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-                          onClick={() => setSelectedPatient(patient)}
-                        >
+                    {patients.length === 0 ? <p className="text-gray-500 dark:text-gray-400 text-sm">No patients added yet</p> : patients.map(patient => <div key={patient.id} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer" onClick={() => setSelectedPatient(patient)}>
                           <div className="flex justify-between items-start">
                             <div>
                               <h4 className="font-medium text-gray-900 dark:text-gray-100">{patient.name}</h4>
@@ -417,22 +373,16 @@ const Index = () => {
                               {patient.createdAt.toLocaleDateString()}
                             </span>
                           </div>
-                          {patient.notes && (
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{patient.notes}</p>
-                          )}
-                        </div>
-                      ))
-                    )}
+                          {patient.notes && <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{patient.notes}</p>}
+                        </div>)}
                   </div>
                 </CardContent>
               </Card>
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* Examinations View */}
-        {currentView === "examinations" && (
-          <div className="space-y-6">
+        {currentView === "examinations" && <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Vision Examinations</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -441,31 +391,25 @@ const Index = () => {
                   <CardTitle>Record New Examination</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {patients.length === 0 ? (
-                    <p className="text-gray-500 dark:text-gray-400">Please add patients first to record examinations.</p>
-                  ) : (
-                    <form onSubmit={addExamination} className="space-y-4">
+                  {patients.length === 0 ? <p className="text-gray-500 dark:text-gray-400">Please add patients first to record examinations.</p> : <form onSubmit={addExamination} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="patient">Select Patient</Label>
-                        <Select onValueChange={(value) => {
-                          const patient = patients.find(p => p.id === value);
-                          setSelectedPatient(patient || null);
-                        }}>
+                        <Select onValueChange={value => {
+                    const patient = patients.find(p => p.id === value);
+                    setSelectedPatient(patient || null);
+                  }}>
                           <SelectTrigger>
                             <SelectValue placeholder="Choose a patient" />
                           </SelectTrigger>
                           <SelectContent>
-                            {patients.map((patient) => (
-                              <SelectItem key={patient.id} value={patient.id}>
+                            {patients.map(patient => <SelectItem key={patient.id} value={patient.id}>
                                 {patient.name} (Age: {patient.age})
-                              </SelectItem>
-                            ))}
+                              </SelectItem>)}
                           </SelectContent>
                         </Select>
                       </div>
 
-                      {selectedPatient && (
-                        <>
+                      {selectedPatient && <>
                           <div className="space-y-2">
                             <Label htmlFor="examType">Examination Type</Label>
                             <Select name="examType">
@@ -506,10 +450,8 @@ const Index = () => {
                             <FileText className="w-4 h-4 mr-2" />
                             Record Examination
                           </Button>
-                        </>
-                      )}
-                    </form>
-                  )}
+                        </>}
+                    </form>}
                 </CardContent>
               </Card>
 
@@ -519,16 +461,9 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
-                    {examinations.length === 0 ? (
-                      <p className="text-gray-500 dark:text-gray-400 text-sm">No examinations recorded yet</p>
-                    ) : (
-                      examinations.map((exam) => {
-                        const patient = patients.find(p => p.id === exam.patientId);
-                        return (
-                          <div
-                            key={exam.id}
-                            className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
-                          >
+                    {examinations.length === 0 ? <p className="text-gray-500 dark:text-gray-400 text-sm">No examinations recorded yet</p> : examinations.map(exam => {
+                  const patient = patients.find(p => p.id === exam.patientId);
+                  return <div key={exam.id} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
                             <div className="flex justify-between items-start">
                               <div>
                                 <h4 className="font-medium text-gray-900 dark:text-gray-100">{patient?.name}</h4>
@@ -541,22 +476,15 @@ const Index = () => {
                                 {exam.date.toLocaleDateString()}
                               </span>
                             </div>
-                            {exam.results.notes && (
-                              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{exam.results.notes}</p>
-                            )}
-                          </div>
-                        );
-                      })
-                    )}
+                            {exam.results.notes && <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{exam.results.notes}</p>}
+                          </div>;
+                })}
                   </div>
                 </CardContent>
               </Card>
             </div>
-          </div>
-        )}
+          </div>}
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
