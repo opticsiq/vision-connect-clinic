@@ -127,9 +127,7 @@ const Index = () => {
     return <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center bg-slate-50">
-              <Eye className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-            </div>
+            
             <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">OPTI CLINIC</CardTitle>
             <p className="text-gray-600 dark:text-gray-400">Professional Vision Care Management</p>
           </CardHeader>
