@@ -204,7 +204,7 @@ const Index = () => {
               <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
                 <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Optometry Clinic</h1>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">OPTI Clinic</h1>
             </div>
             <div className="flex items-center space-x-4">
               <ThemeToggle />
