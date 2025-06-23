@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageToggle } from '@/components/LanguageToggle';
 import { 
   Eye, 
   Users, 
@@ -35,6 +38,9 @@ import {
 } from 'lucide-react';
 
 const Index = () => {
+  const { t } = useTranslation();
+  const { isRTL } = useLanguage();
+  
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [registerFirstName, setRegisterFirstName] = useState('');
@@ -106,7 +112,8 @@ const Index = () => {
   if (currentView === 'login') {
     return (
       <div className="min-h-screen medical-gradient flex items-center justify-center p-4">
-        <div className="absolute top-4 right-4">
+        <div className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} flex gap-2`}>
+          <LanguageToggle />
           <ThemeToggle />
         </div>
         
@@ -117,17 +124,17 @@ const Index = () => {
             </div>
             <div>
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
-                OptiCare
+                {t('appName')}
               </CardTitle>
               <CardDescription className="text-lg mt-2">
-                Professional Vision Management
+                {t('tagline')}
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+                <Label htmlFor="email" className="text-sm font-medium">{t('auth.email')}</Label>
                 <Input 
                   id="email" 
                   name="email" 
@@ -138,7 +145,7 @@ const Index = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">{t('auth.password')}</Label>
                 <Input 
                   id="password" 
                   name="password" 
@@ -149,7 +156,7 @@ const Index = () => {
                 />
               </div>
               <Button type="submit" className="w-full h-11 rounded-xl text-lg font-semibold gradient-bg hover:opacity-90 transition-all duration-200 shadow-lg">
-                Sign In
+                {t('auth.signIn')}
               </Button>
             </form>
             
@@ -158,7 +165,7 @@ const Index = () => {
                 <Separator className="w-full" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-background px-4 text-muted-foreground">or</span>
+                <span className="bg-background px-4 text-muted-foreground">{t('common.or')}</span>
               </div>
             </div>
             
@@ -167,7 +174,7 @@ const Index = () => {
               onClick={() => setCurrentView('register')}
               className="w-full h-11 rounded-xl border-2 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
             >
-              Create New Account
+              {t('auth.createAccount')}
             </Button>
           </CardContent>
         </Card>
@@ -178,7 +185,8 @@ const Index = () => {
   if (currentView === 'register') {
     return (
       <div className="min-h-screen medical-gradient flex items-center justify-center p-4">
-        <div className="absolute top-4 right-4">
+        <div className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} flex gap-2`}>
+          <LanguageToggle />
           <ThemeToggle />
         </div>
         
@@ -187,54 +195,54 @@ const Index = () => {
             <div className="mx-auto w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4">
               <UserPlus className="h-8 w-8 text-blue-600" />
             </div>
-            <CardTitle className="text-2xl font-bold">Join OptiCare</CardTitle>
-            <CardDescription>Create your professional account</CardDescription>
+            <CardTitle className="text-2xl font-bold">{t('auth.joinOptiCare')}</CardTitle>
+            <CardDescription>{t('auth.createProfessionalAccount')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">{t('auth.firstName')}</Label>
                   <Input id="firstName" name="firstName" placeholder="John" className="rounded-xl" required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">{t('auth.lastName')}</Label>
                   <Input id="lastName" name="lastName" placeholder="Doe" className="rounded-xl" required />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input id="email" name="email" type="email" placeholder="doctor@opticare.com" className="rounded-xl" required />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('auth.password')}</Label>
                 <Input id="password" name="password" type="password" placeholder="••••••••" className="rounded-xl" required />
               </div>
               
               <div className="space-y-3">
-                <Label className="text-sm font-medium">Professional Role</Label>
+                <Label className="text-sm font-medium">{t('auth.professionalRole')}</Label>
                 <div className="grid grid-cols-2 gap-3">
                   <label className="flex items-center space-x-3 p-4 rounded-xl border-2 hover:border-blue-500 cursor-pointer transition-colors">
                     <input type="radio" name="role" value="optometrist" defaultChecked className="text-blue-600" />
-                    <div className="flex items-center space-x-2">
+                    <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                       <EyeIcon className="h-5 w-5 text-blue-600" />
-                      <span className="text-sm font-medium">Optometrist</span>
+                      <span className="text-sm font-medium">{t('auth.optometrist')}</span>
                     </div>
                   </label>
                   <label className="flex items-center space-x-3 p-4 rounded-xl border-2 hover:border-blue-500 cursor-pointer transition-colors">
                     <input type="radio" name="role" value="ophthalmologist" className="text-blue-600" />
-                    <div className="flex items-center space-x-2">
+                    <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                       <Brain className="h-5 w-5 text-teal-600" />
-                      <span className="text-sm font-medium">Ophthalmologist</span>
+                      <span className="text-sm font-medium">{t('auth.ophthalmologist')}</span>
                     </div>
                   </label>
                 </div>
               </div>
               
               <Button type="submit" className="w-full h-11 rounded-xl gradient-bg hover:opacity-90 transition-all duration-200 shadow-lg">
-                Create Account
+                {t('auth.createAccount')}
               </Button>
             </form>
             
@@ -243,7 +251,7 @@ const Index = () => {
               onClick={() => setCurrentView('login')}
               className="w-full rounded-xl"
             >
-              ← Back to Sign In
+              {isRTL ? '→' : '←'} {t('auth.backToSignIn')}
             </Button>
           </CardContent>
         </Card>
@@ -258,21 +266,22 @@ const Index = () => {
         <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-4`}>
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-teal-600 rounded-xl flex items-center justify-center">
                   <Eye className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900 dark:text-white">OptiCare</h1>
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white">{t('appName')}</h1>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {userRole === 'ophthalmologist' ? 'Ophthalmologist' : 'Optometrist'} Dashboard
+                    {userRole === 'ophthalmologist' ? t('auth.ophthalmologist') : t('auth.optometrist')} {t('dashboard.dashboard')}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-4`}>
                 <Button variant="ghost" size="sm" className="rounded-xl">
                   <Bell className="h-5 w-5" />
                 </Button>
+                <LanguageToggle />
                 <ThemeToggle />
                 <Button 
                   variant="outline" 
@@ -280,7 +289,7 @@ const Index = () => {
                   onClick={() => setCurrentView('login')}
                   className="rounded-xl"
                 >
-                  Sign Out
+                  {t('auth.signOut')}
                 </Button>
               </div>
             </div>
@@ -294,20 +303,20 @@ const Index = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    Welcome back, Dr. Smith
+                    {t('dashboard.welcome')}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300">
-                    You have {patients.length} patients and {exams.length} recent exams to review.
+                    {t('dashboard.patientsAndExams', { patientCount: patients.length, examCount: exams.length })}
                   </p>
                 </div>
                 <div className="hidden md:flex items-center space-x-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-blue-600">{patients.length}</div>
-                    <div className="text-sm text-gray-500">Patients</div>
+                    <div className="text-sm text-gray-500">{t('dashboard.patients')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-teal-600">{exams.length}</div>
-                    <div className="text-sm text-gray-500">Exams</div>
+                    <div className="text-sm text-gray-500">{t('dashboard.exams')}</div>
                   </div>
                 </div>
               </div>
@@ -321,8 +330,8 @@ const Index = () => {
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Manage Patients</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Add and view patient records</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('dashboard.managePatients')}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('dashboard.addViewPatientRecords')}</p>
               </CardContent>
             </Card>
 
@@ -331,8 +340,8 @@ const Index = () => {
                 <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Activity className="h-6 w-6 text-teal-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Visual Exams</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Conduct and review examinations</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('dashboard.visualExams')}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('dashboard.conductReviewExams')}</p>
               </CardContent>
             </Card>
 
@@ -341,8 +350,8 @@ const Index = () => {
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Calendar className="h-6 w-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Schedule</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">View appointments and calendar</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('dashboard.schedule')}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('dashboard.viewAppointments')}</p>
               </CardContent>
             </Card>
 
@@ -351,8 +360,8 @@ const Index = () => {
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <FileText className="h-6 w-6 text-purple-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Reports</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Generate and export reports</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t('dashboard.reports')}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('dashboard.generateExportReports')}</p>
               </CardContent>
             </Card>
           </div>
@@ -361,24 +370,24 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <Card className="rounded-2xl border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                   <TrendingUp className="h-5 w-5 text-blue-600" />
-                  <span>Recent Activity</span>
+                  <span>{t('dashboard.recentActivity')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {exams.length === 0 ? (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">No recent exams</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">{t('dashboard.noRecentExams')}</p>
                   ) : (
                     exams.slice(-3).map((exam) => (
-                      <div key={exam.id} className="flex items-center space-x-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700">
+                      <div key={exam.id} className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700`}>
                         <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                           <Eye className="h-5 w-5 text-blue-600" />
                         </div>
                         <div className="flex-1">
                           <p className="font-medium text-gray-900 dark:text-white">{exam.patientName}</p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Visual exam on {exam.date}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">{t('patients.visualExamOn')} {exam.date}</p>
                         </div>
                       </div>
                     ))
@@ -389,30 +398,30 @@ const Index = () => {
 
             <Card className="rounded-2xl border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                   <Award className="h-5 w-5 text-teal-600" />
-                  <span>Performance Metrics</span>
+                  <span>{t('dashboard.performanceMetrics')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600 dark:text-gray-300">Monthly Exams</span>
+                      <span className="text-gray-600 dark:text-gray-300">{t('dashboard.monthlyExams')}</span>
                       <span className="font-medium">{exams.length}/30</span>
                     </div>
                     <Progress value={(exams.length / 30) * 100} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600 dark:text-gray-300">Patient Satisfaction</span>
+                      <span className="text-gray-600 dark:text-gray-300">{t('dashboard.patientSatisfaction')}</span>
                       <span className="font-medium">95%</span>
                     </div>
                     <Progress value={95} className="h-2" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600 dark:text-gray-300">Report Completion</span>
+                      <span className="text-gray-600 dark:text-gray-300">{t('dashboard.reportCompletion')}</span>
                       <span className="font-medium">88%</span>
                     </div>
                     <Progress value={88} className="h-2" />
@@ -432,13 +441,16 @@ const Index = () => {
         <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-4`}>
                 <Button variant="ghost" onClick={() => setCurrentView('dashboard')} className="rounded-xl">
-                  ← Dashboard
+                  {isRTL ? '→' : '←'} {t('dashboard.dashboard')}
                 </Button>
-                <h1 className="text-xl font-bold">Patient Management</h1>
+                <h1 className="text-xl font-bold">{t('patients.patientManagement')}</h1>
               </div>
-              <ThemeToggle />
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
+                <LanguageToggle />
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </header>
@@ -447,32 +459,32 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <Card className="rounded-2xl border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                   <UserPlus className="h-5 w-5 text-blue-600" />
-                  <span>Add New Patient</span>
+                  <span>{t('patients.addNewPatient')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleAddPatient} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name">{t('patients.fullName')}</Label>
                     <Input id="name" name="name" placeholder="John Doe" className="rounded-xl" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="age">Age</Label>
+                    <Label htmlFor="age">{t('patients.age')}</Label>
                     <Input id="age" name="age" type="number" placeholder="35" className="rounded-xl" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">{t('patients.phoneNumber')}</Label>
                     <Input id="phone" name="phone" type="tel" placeholder="+1 (555) 123-4567" className="rounded-xl" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="notes">Medical Notes</Label>
-                    <Input id="notes" name="notes" placeholder="Any relevant medical history..." className="rounded-xl" />
+                    <Label htmlFor="notes">{t('patients.medicalNotes')}</Label>
+                    <Input id="notes" name="notes" placeholder={t('patients.anyRelevantHistory')} className="rounded-xl" />
                   </div>
                   <Button type="submit" className="w-full rounded-xl gradient-bg">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Patient
+                    <Plus className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {t('patients.addPatient')}
                   </Button>
                 </form>
               </CardContent>
@@ -480,15 +492,15 @@ const Index = () => {
 
             <Card className="rounded-2xl border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                   <Users className="h-5 w-5 text-teal-600" />
-                  <span>Patient List ({patients.length})</span>
+                  <span>{t('patients.patientList')} ({patients.length})</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {patients.length === 0 ? (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">No patients added yet</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">{t('patients.noPatientsYet')}</p>
                   ) : (
                     patients.map((patient) => (
                       <div 
@@ -499,14 +511,14 @@ const Index = () => {
                           setCurrentView('exams');
                         }}
                       >
-                        <div className="flex items-center space-x-3">
+                        <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-3`}>
                           <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                             <User className="h-5 w-5 text-blue-600" />
                           </div>
                           <div className="flex-1">
                             <h3 className="font-medium text-gray-900 dark:text-white">{patient.name}</h3>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                              Age: {patient.age} • <Phone className="inline h-3 w-3" /> {patient.phone}
+                              {t('patients.age')}: {patient.age} • <Phone className="inline h-3 w-3" /> {patient.phone}
                             </p>
                           </div>
                         </div>
@@ -531,18 +543,21 @@ const Index = () => {
         <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-4`}>
                 <Button variant="ghost" onClick={() => setCurrentView('patients')} className="rounded-xl">
-                  ← Patients
+                  {isRTL ? '→' : '←'} {t('dashboard.patients')}
                 </Button>
                 <div>
-                  <h1 className="text-xl font-bold">Visual Examinations</h1>
+                  <h1 className="text-xl font-bold">{t('exams.visualExaminations')}</h1>
                   {selectedPatient && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Patient: {selectedPatient.name}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('exams.patient')}: {selectedPatient.name}</p>
                   )}
                 </div>
               </div>
-              <ThemeToggle />
+              <div className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
+                <LanguageToggle />
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </header>
@@ -551,12 +566,12 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <Card className="rounded-2xl border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                   <Activity className="h-5 w-5 text-blue-600" />
-                  <span>New Examination</span>
+                  <span>{t('exams.newExamination')}</span>
                 </CardTitle>
                 <CardDescription>
-                  {selectedPatient ? `Recording exam for ${selectedPatient.name}` : 'Select a patient first'}
+                  {selectedPatient ? t('exams.recordingExamFor', { patientName: selectedPatient.name }) : t('exams.selectPatientFirst')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -564,51 +579,51 @@ const Index = () => {
                   <form onSubmit={handleAddExam} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="topography">Topography</Label>
-                        <Input id="topography" name="topography" placeholder="Normal" className="rounded-xl" />
+                        <Label htmlFor="topography">{t('exams.topography')}</Label>
+                        <Input id="topography" name="topography" placeholder={t('common.normal')} className="rounded-xl" />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="oct">OCT Results</Label>
-                        <Input id="oct" name="oct" placeholder="No abnormalities" className="rounded-xl" />
+                        <Label htmlFor="oct">{t('exams.octResults')}</Label>
+                        <Input id="oct" name="oct" placeholder={t('common.noAbnormalities')} className="rounded-xl" />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="visualAcuity">Visual Acuity</Label>
+                      <Label htmlFor="visualAcuity">{t('exams.visualAcuity')}</Label>
                       <Input id="visualAcuity" name="visualAcuity" placeholder="20/20 OD, 20/25 OS" className="rounded-xl" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="prescription">Prescription</Label>
+                      <Label htmlFor="prescription">{t('exams.prescription')}</Label>
                       <Input id="prescription" name="prescription" placeholder="OD: -1.25, OS: -1.50" className="rounded-xl" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="iop">Intraocular Pressure</Label>
+                      <Label htmlFor="iop">{t('exams.intraocularPressure')}</Label>
                       <Input id="iop" name="iop" placeholder="16 mmHg OD, 15 mmHg OS" className="rounded-xl" />
                     </div>
                     <div className="flex space-x-2">
                       <Button type="button" variant="outline" className="flex-1 rounded-xl">
-                        <Camera className="h-4 w-4 mr-2" />
-                        Add Image
+                        <Camera className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                        {t('exams.addImage')}
                       </Button>
                       <Button type="button" variant="outline" className="flex-1 rounded-xl">
-                        <Upload className="h-4 w-4 mr-2" />
-                        Upload File
+                        <Upload className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                        {t('exams.uploadFile')}
                       </Button>
                     </div>
                     <Button type="submit" className="w-full rounded-xl gradient-bg">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Save Examination
+                      <Plus className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {t('exams.saveExamination')}
                     </Button>
                   </form>
                 ) : (
                   <div className="text-center py-8">
                     <Eye className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500 dark:text-gray-400">Select a patient to begin examination</p>
+                    <p className="text-gray-500 dark:text-gray-400">{t('exams.selectPatientToBegin')}</p>
                     <Button 
                       onClick={() => setCurrentView('patients')} 
                       className="mt-4 rounded-xl"
                       variant="outline"
                     >
-                      Choose Patient
+                      {t('exams.choosePatient')}
                     </Button>
                   </div>
                 )}
@@ -617,33 +632,33 @@ const Index = () => {
 
             <Card className="rounded-2xl border-0 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
+                <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                   <FileText className="h-5 w-5 text-teal-600" />
-                  <span>Examination History</span>
+                  <span>{t('exams.examinationHistory')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {exams.length === 0 ? (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">No examinations recorded</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">{t('exams.noExaminationsRecorded')}</p>
                   ) : (
                     exams.map((exam) => (
                       <div key={exam.id} className="p-4 rounded-xl bg-gray-50 dark:bg-gray-700">
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="font-medium text-gray-900 dark:text-white">{exam.patientName}</h3>
-                          <div className="flex space-x-2">
+                          <div className={`flex ${isRTL ? 'space-x-reverse' : ''} space-x-2`}>
                             <Button size="sm" variant="outline" className="rounded-lg">
-                              <Download className="h-3 w-3 mr-1" />
-                              Export
+                              <Download className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                              {t('exams.export')}
                             </Button>
                             <Button size="sm" variant="outline" className="rounded-lg">
-                              <Send className="h-3 w-3 mr-1" />
-                              Share
+                              <Send className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                              {t('exams.share')}
                             </Button>
                           </div>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                          <p><span className="text-gray-600 dark:text-gray-300">Date:</span> {exam.date}</p>
+                          <p><span className="text-gray-600 dark:text-gray-300">{t('exams.date')}:</span> {exam.date}</p>
                           <p><span className="text-gray-600 dark:text-gray-300">VA:</span> {exam.visualAcuity}</p>
                           <p><span className="text-gray-600 dark:text-gray-300">IOP:</span> {exam.iop}</p>
                           <p><span className="text-gray-600 dark:text-gray-300">Rx:</span> {exam.prescription}</p>

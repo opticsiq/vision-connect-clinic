@@ -132,6 +132,41 @@
   p {
     @apply leading-7;
   }
+
+  /* RTL Support */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  [dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+
+  /* RTL adjustments for flex items */
+  [dir="rtl"] .flex {
+    flex-direction: row-reverse;
+  }
+
+  [dir="rtl"] .justify-between {
+    justify-content: space-between;
+  }
+
+  [dir="rtl"] .items-center {
+    align-items: center;
+  }
+
+  /* Override flex direction for specific cases */
+  [dir="rtl"] .flex-col {
+    flex-direction: column !important;
+  }
+
+  [dir="rtl"] .grid {
+    direction: ltr;
+  }
+
+  [dir="rtl"] .grid > * {
+    direction: rtl;
+  }
 }
 
 @layer components {
@@ -160,5 +195,41 @@
 
   .dark .shadow-medical {
     box-shadow: 0 8px 32px rgba(0, 123, 255, 0.25);
+  }
+
+  /* RTL-specific styles */
+  [dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+    margin-right: 0.5rem;
+    margin-left: 0;
+  }
+
+  [dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+    margin-right: 0.75rem;
+    margin-left: 0;
+  }
+
+  [dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-right: 1rem;
+    margin-left: 0;
+  }
+
+  [dir="rtl"] .mr-2 {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+
+  [dir="rtl"] .ml-2 {
+    margin-left: 0;
+    margin-right: 0.5rem;
+  }
+
+  [dir="rtl"] .mr-1 {
+    margin-right: 0;
+    margin-left: 0.25rem;
+  }
+
+  [dir="rtl"] .ml-1 {
+    margin-left: 0;
+    margin-right: 0.25rem;
   }
 }
