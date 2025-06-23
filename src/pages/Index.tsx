@@ -50,7 +50,9 @@ const Index = () => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
   // Mock authentication
-  const handleAuth = (formData: FormData) => {
+  const handleAuth = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const name = formData.get("name") as string;
@@ -83,7 +85,9 @@ const Index = () => {
     }
   };
 
-  const addPatient = (formData: FormData) => {
+  const addPatient = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const newPatient: Patient = {
       id: Date.now().toString(),
       name: formData.get("patientName") as string,
@@ -97,11 +101,14 @@ const Index = () => {
       title: "Patient added successfully!",
       description: `${newPatient.name} has been added to your patient list.`,
     });
+    e.currentTarget.reset();
   };
 
-  const addExamination = (formData: FormData) => {
+  const addExamination = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!selectedPatient) return;
     
+    const formData = new FormData(e.currentTarget);
     const newExam: Examination = {
       id: Date.now().toString(),
       patientId: selectedPatient.id,
@@ -120,6 +127,7 @@ const Index = () => {
       title: "Examination recorded!",
       description: `New ${newExam.type} examination added for ${selectedPatient.name}.`,
     });
+    e.currentTarget.reset();
   };
 
   if (!currentUser) {
@@ -147,7 +155,7 @@ const Index = () => {
               </TabsList>
               
               <TabsContent value="signin" className="space-y-4">
-                <form action={handleAuth} className="space-y-4">
+                <form onSubmit={handleAuth} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" name="email" type="email" placeholder="doctor@clinic.com" required />
@@ -163,7 +171,7 @@ const Index = () => {
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">
-                <form action={handleAuth} className="space-y-4">
+                <form onSubmit={handleAuth} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
                     <Input id="name" name="name" placeholder="Dr. John Smith" required />
@@ -364,7 +372,7 @@ const Index = () => {
                   <CardTitle>Add New Patient</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <form action={addPatient} className="space-y-4">
+                  <form onSubmit={addPatient} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="patientName">Patient Name</Label>
                       <Input id="patientName" name="patientName" placeholder="John Doe" required />
@@ -441,7 +449,7 @@ const Index = () => {
                   {patients.length === 0 ? (
                     <p className="text-gray-500">Please add patients first to record examinations.</p>
                   ) : (
-                    <form action={addExamination} className="space-y-4">
+                    <form onSubmit={addExamination} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="patient">Select Patient</Label>
                         <Select onValueChange={(value) => {
