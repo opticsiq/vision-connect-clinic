@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, Users, Calendar, FileText, Settings, Bell, Plus, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type UserRole = "ophthalmologist" | "optometrist" | null;
 type User = {
@@ -132,18 +132,21 @@ const Index = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <Eye className="w-8 h-8 text-blue-600" />
+            <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+              <Eye className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
+            <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               Optometry Clinic
             </CardTitle>
-            <p className="text-gray-600">Professional Vision Care Management</p>
+            <p className="text-gray-600 dark:text-gray-400">Professional Vision Care Management</p>
           </CardHeader>
           <CardContent>
+            <div className="flex justify-center mb-4">
+              <ThemeToggle />
+            </div>
             <Tabs value={isSignUp ? "signup" : "signin"} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin" onClick={() => setIsSignUp(false)}>
@@ -164,7 +167,7 @@ const Index = () => {
                     <Label htmlFor="password">Password</Label>
                     <Input id="password" name="password" type="password" required />
                   </div>
-                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">
                     Sign In
                   </Button>
                 </form>
@@ -196,7 +199,7 @@ const Index = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">
                     Create Account
                   </Button>
                 </form>
@@ -209,22 +212,23 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <Eye className="w-5 h-5 text-blue-600" />
+              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <h1 className="text-xl font-semibold text-gray-900">Optometry Clinic</h1>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Optometry Clinic</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <Bell className="w-5 h-5 text-gray-500 cursor-pointer hover:text-gray-700" />
+              <ThemeToggle />
+              <Bell className="w-5 h-5 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300" />
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-700">{currentUser.name}</span>
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                <span className="text-sm text-gray-700 dark:text-gray-300">{currentUser.name}</span>
+                <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full">
                   {currentUser.role === "ophthalmologist" ? "👨‍⚕️" : "🧑‍⚕️"}
                 </span>
               </div>
@@ -232,6 +236,7 @@ const Index = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentUser(null)}
+                className="border-gray-300 dark:border-gray-600"
               >
                 Sign Out
               </Button>
@@ -263,99 +268,89 @@ const Index = () => {
         {/* Dashboard View */}
         {currentView === "dashboard" && (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Welcome back, {currentUser.name}
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Welcome back, {currentUser.name}!
               </h2>
-              <p className="text-gray-600">Here's an overview of your clinic activity.</p>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {currentUser.role === "ophthalmologist" ? "👨‍⚕️ Ophthalmologist" : "🧑‍⚕️ Optometrist"}
+              </div>
             </div>
 
+            {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total Patients</p>
-                      <p className="text-3xl font-bold text-gray-900">{patients.length}</p>
-                    </div>
-                    <Users className="w-8 h-8 text-blue-600" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Examinations</p>
-                      <p className="text-3xl font-bold text-gray-900">{examinations.length}</p>
-                    </div>
-                    <FileText className="w-8 h-8 text-teal-600" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Today's Schedule</p>
-                      <p className="text-3xl font-bold text-gray-900">8</p>
-                    </div>
-                    <Calendar className="w-8 h-8 text-green-600" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Button
-                    className="w-full justify-start"
-                    variant="outline"
-                    onClick={() => setCurrentView("patients")}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add New Patient
-                  </Button>
-                  <Button
-                    className="w-full justify-start"
-                    variant="outline"
-                    onClick={() => setCurrentView("examinations")}
-                  >
-                    <FileText className="w-4 h-4 mr-2" />
-                    Record Examination
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Patients</CardTitle>
+                  <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 </CardHeader>
                 <CardContent>
-                  {examinations.length === 0 ? (
-                    <p className="text-gray-500 text-sm">No recent examinations</p>
-                  ) : (
-                    <div className="space-y-3">
-                      {examinations.slice(-3).map((exam) => {
-                        const patient = patients.find(p => p.id === exam.patientId);
-                        return (
-                          <div key={exam.id} className="flex items-center space-x-3 text-sm">
-                            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                            <span>{exam.type} examination for {patient?.name}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{patients.length}</div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Examinations</CardTitle>
+                  <FileText className="h-4 w-4 text-green-600 dark:text-green-400" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{examinations.length}</div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Today's Schedule</CardTitle>
+                  <Calendar className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">8</div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">appointments</p>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-gray-900 dark:text-gray-100">Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setCurrentView("patients")}
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                  >
+                    <Plus className="w-6 h-6" />
+                    <span className="text-sm">Add Patient</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setCurrentView("examinations")}
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                  >
+                    <FileText className="w-6 h-6" />
+                    <span className="text-sm">New Exam</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                  >
+                    <Search className="w-6 h-6" />
+                    <span className="text-sm">Search Records</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center space-y-2"
+                  >
+                    <Settings className="w-6 h-6" />
+                    <span className="text-sm">Settings</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
@@ -363,7 +358,7 @@ const Index = () => {
         {currentView === "patients" && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Patient Management</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Patient Management</h2>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -404,26 +399,26 @@ const Index = () => {
                 <CardContent>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
                     {patients.length === 0 ? (
-                      <p className="text-gray-500 text-sm">No patients added yet</p>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">No patients added yet</p>
                     ) : (
                       patients.map((patient) => (
                         <div
                           key={patient.id}
-                          className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                          className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
                           onClick={() => setSelectedPatient(patient)}
                         >
                           <div className="flex justify-between items-start">
                             <div>
-                              <h4 className="font-medium text-gray-900">{patient.name}</h4>
-                              <p className="text-sm text-gray-600">Age: {patient.age}</p>
-                              <p className="text-sm text-gray-600">{patient.phone}</p>
+                              <h4 className="font-medium text-gray-900 dark:text-gray-100">{patient.name}</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">Age: {patient.age}</p>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">{patient.phone}</p>
                             </div>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
                               {patient.createdAt.toLocaleDateString()}
                             </span>
                           </div>
                           {patient.notes && (
-                            <p className="text-sm text-gray-600 mt-2">{patient.notes}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{patient.notes}</p>
                           )}
                         </div>
                       ))
@@ -438,7 +433,7 @@ const Index = () => {
         {/* Examinations View */}
         {currentView === "examinations" && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Vision Examinations</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Vision Examinations</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
@@ -447,7 +442,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   {patients.length === 0 ? (
-                    <p className="text-gray-500">Please add patients first to record examinations.</p>
+                    <p className="text-gray-500 dark:text-gray-400">Please add patients first to record examinations.</p>
                   ) : (
                     <form onSubmit={addExamination} className="space-y-4">
                       <div className="space-y-2">
@@ -525,35 +520,30 @@ const Index = () => {
                 <CardContent>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
                     {examinations.length === 0 ? (
-                      <p className="text-gray-500 text-sm">No examinations recorded yet</p>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">No examinations recorded yet</p>
                     ) : (
                       examinations.map((exam) => {
                         const patient = patients.find(p => p.id === exam.patientId);
                         return (
-                          <div key={exam.id} className="p-3 border rounded-lg">
-                            <div className="flex justify-between items-start mb-2">
+                          <div
+                            key={exam.id}
+                            className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                          >
+                            <div className="flex justify-between items-start">
                               <div>
-                                <h4 className="font-medium text-gray-900">{patient?.name}</h4>
-                                <p className="text-sm text-gray-600">{exam.type}</p>
+                                <h4 className="font-medium text-gray-900 dark:text-gray-100">{patient?.name}</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">{exam.type}</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  VA: {exam.results.visualAcuity || 'N/A'}
+                                </p>
                               </div>
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
                                 {exam.date.toLocaleDateString()}
                               </span>
                             </div>
-                            <div className="text-sm text-gray-600 space-y-1">
-                              {exam.results.visualAcuity && (
-                                <p>Visual Acuity: {exam.results.visualAcuity}</p>
-                              )}
-                              {exam.results.iop && (
-                                <p>IOP: {exam.results.iop}</p>
-                              )}
-                              {exam.results.prescription && (
-                                <p>Prescription: {exam.results.prescription}</p>
-                              )}
-                              {exam.results.notes && (
-                                <p>Notes: {exam.results.notes}</p>
-                              )}
-                            </div>
+                            {exam.results.notes && (
+                              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{exam.results.notes}</p>
+                            )}
                           </div>
                         );
                       })
