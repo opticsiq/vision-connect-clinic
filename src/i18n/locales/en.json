@@ -1,0 +1,92 @@
+
+{
+  "app": {
+    "title": "OPTI CLINIC",
+    "subtitle": "Professional Vision Care Management"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "createAccount": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "role": "Role",
+    "selectRole": "Select your role",
+    "ophthalmologist": "👨‍⚕️ Ophthalmologist",
+    "optometrist": "🧑‍⚕️ Optometrist",
+    "emailPlaceholder": "doctor@clinic.com",
+    "namePlaceholder": "Dr. John Smith",
+    "welcomeBack": "Welcome back!",
+    "signedInAs": "Signed in as",
+    "accountCreated": "Account created successfully!",
+    "welcome": "Welcome,"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "examinations": "Examinations",
+    "signOut": "Sign Out"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back,",
+    "totalPatients": "Total Patients",
+    "examinations": "Examinations",
+    "todaySchedule": "Today's Schedule",
+    "appointments": "appointments",
+    "quickActions": "Quick Actions",
+    "addPatient": "Add Patient",
+    "newExam": "New Exam",
+    "searchRecords": "Search Records",
+    "settings": "Settings"
+  },
+  "patients": {
+    "management": "Patient Management",
+    "addNew": "Add New Patient",
+    "patientName": "Patient Name",
+    "age": "Age",
+    "phoneNumber": "Phone Number",
+    "notes": "Notes (Optional)",
+    "notesPlaceholder": "Any additional notes...",
+    "patientList": "Patient List",
+    "noPatients": "No patients added yet",
+    "namePlaceholder": "John Doe",
+    "agePlaceholder": "35",
+    "phonePlaceholder": "+1234567890"
+  },
+  "examinations": {
+    "visionExaminations": "Vision Examinations",
+    "recordNew": "Record New Examination",
+    "selectPatient": "Select Patient",
+    "choosePatient": "Choose a patient",
+    "examinationType": "Examination Type",
+    "selectExamType": "Select examination type",
+    "visualAcuity": "Visual Acuity",
+    "iop": "IOP (mmHg)",
+    "prescription": "Prescription",
+    "examNotes": "Examination Notes",
+    "recordExamination": "Record Examination",
+    "recentExaminations": "Recent Examinations",
+    "noExaminations": "No examinations recorded yet",
+    "addPatientsFirst": "Please add patients first to record examinations.",
+    "examTypes": {
+      "visualAcuity": "Visual Acuity",
+      "topography": "Topography",
+      "oct": "OCT",
+      "iop": "Intraocular Pressure",
+      "comprehensive": "Comprehensive Exam"
+    },
+    "placeholders": {
+      "visualAcuity": "20/20, 20/40, etc.",
+      "iop": "12-15 mmHg",
+      "prescription": "SPH, CYL, AXIS...",
+      "notes": "Additional findings..."
+    }
+  },
+  "toasts": {
+    "patientAdded": "Patient added successfully!",
+    "patientAddedDesc": "has been added to your patient list.",
+    "examRecorded": "Examination recorded!",
+    "examRecordedDesc": "examination added for"
+  }
+}
