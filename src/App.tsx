@@ -20,8 +20,6 @@ const AppContent = () => {
   return (
     <DirectionProvider dir={isRTL ? "rtl" : "ltr"}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -39,6 +37,8 @@ const App = () => (
     <ThemeProvider>
       <LanguageProvider>
         <AppContent />
+        <Toaster />
+        <Sonner />
       </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
