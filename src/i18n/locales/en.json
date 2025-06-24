@@ -38,7 +38,9 @@
     "addPatient": "Add Patient",
     "newExam": "New Exam",
     "searchRecords": "Search Records",
-    "settings": "Settings"
+    "settings": "Settings",
+    "notifications": "Recent Referrals",
+    "referralReceived": "New referral received"
   },
   "patients": {
     "management": "Patient Management",
@@ -52,7 +54,13 @@
     "noPatients": "No patients added yet",
     "namePlaceholder": "John Doe",
     "agePlaceholder": "35",
-    "phonePlaceholder": "+1234567890"
+    "phonePlaceholder": "+1234567890",
+    "status": {
+      "active": "Active",
+      "readyForReferral": "Ready for Referral",
+      "referred": "Referred"
+    },
+    "referToDoctor": "Refer to Doctor"
   },
   "examinations": {
     "visionExaminations": "Vision Examinations",
@@ -69,6 +77,12 @@
     "recentExaminations": "Recent Examinations",
     "noExaminations": "No examinations recorded yet",
     "addPatientsFirst": "Please add patients first to record examinations.",
+    "rightEye": "Right Eye",
+    "leftEye": "Left Eye",
+    "eyeData": "Eye Data",
+    "generalNotes": "General Notes",
+    "attachImages": "Attach Images",
+    "imagePreview": "Image Preview",
     "examTypes": {
       "visualAcuity": "Visual Acuity",
       "topography": "Topography",
@@ -83,10 +97,23 @@
       "notes": "Additional findings..."
     }
   },
+  "referrals": {
+    "title": "Patient Referral",
+    "selectDoctor": "Select Ophthalmologist",
+    "chooseDoctor": "Choose a doctor",
+    "referralNotes": "Referral Notes",
+    "notesPlaceholder": "Reason for referral and additional notes...",
+    "sendReferral": "Send Referral",
+    "cancel": "Cancel",
+    "success": "Patient referred successfully",
+    "patientReferred": "has been referred to"
+  },
   "toasts": {
     "patientAdded": "Patient added successfully!",
     "patientAddedDesc": "has been added to your patient list.",
     "examRecorded": "Examination recorded!",
-    "examRecordedDesc": "examination added for"
+    "examRecordedDesc": "examination added for",
+    "referralSent": "Referral sent successfully!",
+    "referralSentDesc": "Patient has been referred to the selected doctor."
   }
 }
