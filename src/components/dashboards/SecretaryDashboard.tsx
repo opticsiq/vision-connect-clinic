@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -10,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import { useClinicAuth } from '@/hooks/useClinicAuth'
-import { Calendar, Users, Clock, UserPlus } from 'lucide-react'
+import { Calendar, Users, Clock, UserPlus, X } from 'lucide-react'
 
 interface Patient {
   id: string
