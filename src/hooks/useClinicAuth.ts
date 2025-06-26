@@ -26,6 +26,8 @@ export const useClinicAuth = () => {
         return
       }
 
+      console.log('Fetching clinic user for:', user.email)
+
       // Check if user is platform admin
       if (user.email === 'admin@clinic.com') {
         setClinicUser({
@@ -41,18 +43,65 @@ export const useClinicAuth = () => {
       }
 
       try {
-        const { data, error } = await supabase
+        // First, check if the user has a clinic_users record
+        const { data: clinicUserData, error: clinicUserError } = await supabase
           .from('clinic_users')
           .select('*')
           .eq('user_id', user.id)
           .eq('is_active', true)
-          .single()
+          .maybeSingle()
 
-        if (error) {
-          console.error('Error fetching clinic user:', error)
-          setClinicUser(null)
+        console.log('Clinic user query result:', { clinicUserData, clinicUserError })
+
+        if (clinicUserError && clinicUserError.code !== 'PGRST116') {
+          console.error('Error fetching clinic user:', clinicUserError)
+          throw clinicUserError
+        }
+
+        if (clinicUserData) {
+          setClinicUser(clinicUserData)
         } else {
-          setClinicUser(data)
+          // If no clinic_users record exists, check if they own a clinic
+          const { data: clinicData, error: clinicError } = await supabase
+            .from('clinics')
+            .select('*')
+            .eq('email', user.email)
+            .maybeSingle()
+
+          console.log('Clinic owner query result:', { clinicData, clinicError })
+
+          if (clinicError && clinicError.code !== 'PGRST116') {
+            console.error('Error fetching clinic:', clinicError)
+            throw clinicError
+          }
+
+          if (clinicData) {
+            // Create clinic_users record for the clinic owner
+            const { data: newClinicUser, error: insertError } = await supabase
+              .from('clinic_users')
+              .insert({
+                user_id: user.id,
+                clinic_id: clinicData.id,
+                name: clinicData.name + ' Admin',
+                email: user.email,
+                role: 'owner',
+                is_active: true
+              })
+              .select()
+              .single()
+
+            console.log('Created clinic user:', { newClinicUser, insertError })
+
+            if (insertError) {
+              console.error('Error creating clinic user:', insertError)
+              throw insertError
+            }
+
+            setClinicUser(newClinicUser)
+          } else {
+            console.log('No clinic or clinic_users record found for user')
+            setClinicUser(null)
+          }
         }
       } catch (error) {
         console.error('Error in fetchClinicUser:', error)

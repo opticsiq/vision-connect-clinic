@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast'
 import { useTranslation } from 'react-i18next'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { Loader2 } from 'lucide-react'
+import { createAdminAccount } from '@/utils/createAdmin'
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation()
@@ -18,24 +19,30 @@ export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [creatingAdmin, setCreatingAdmin] = useState(false)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
     try {
+      console.log('Attempting login for:', email)
+      
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       
       if (error) {
+        console.error('Login error:', error)
         if (error.message.includes('Invalid login credentials')) {
           throw new Error(t('auth.errors.invalidCredentials'))
         }
         throw error
       }
 
+      console.log('Login successful, navigating to dashboard')
+      
       toast({
         title: t('auth.welcomeBack'),
         description: t('auth.loginSuccess'),
@@ -43,6 +50,7 @@ export const LoginPage: React.FC = () => {
       
       navigate('/')
     } catch (error: any) {
+      console.error('Login failed:', error)
       toast({
         title: t('auth.errors.loginFailed'),
         description: error.message,
@@ -50,6 +58,33 @@ export const LoginPage: React.FC = () => {
       })
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleCreateAdmin = async () => {
+    setCreatingAdmin(true)
+    try {
+      const result = await createAdminAccount()
+      if (result.success) {
+        toast({
+          title: "Admin Account Created",
+          description: "Use admin@clinic.com / admin123456 to login",
+        })
+      } else {
+        toast({
+          title: "Admin Creation Failed",
+          description: result.error,
+          variant: "destructive",
+        })
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      })
+    } finally {
+      setCreatingAdmin(false)
     }
   }
 
@@ -106,6 +141,25 @@ export const LoginPage: React.FC = () => {
                 )}
               </Button>
             </form>
+
+            {/* Development/Testing Admin Creation */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <Button 
+                onClick={handleCreateAdmin} 
+                variant="outline" 
+                className="w-full" 
+                disabled={creatingAdmin}
+              >
+                {creatingAdmin ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating Admin...
+                  </>
+                ) : (
+                  'Create Admin Account (Development)'
+                )}
+              </Button>
+            </div>
             
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">

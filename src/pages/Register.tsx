@@ -28,6 +28,8 @@ export const RegisterPage: React.FC = () => {
     setLoading(true)
 
     try {
+      console.log('Starting registration process for:', formData.email)
+
       // Validate passwords match
       if (formData.password !== formData.confirmPassword) {
         throw new Error(t('auth.errors.passwordMismatch'))
@@ -38,10 +40,13 @@ export const RegisterPage: React.FC = () => {
         throw new Error(t('auth.errors.weakPassword'))
       }
 
+      // First, create the auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
       })
+
+      console.log('Auth signup result:', { authData, authError })
 
       if (authError) {
         if (authError.message.includes('User already registered')) {
@@ -51,17 +56,21 @@ export const RegisterPage: React.FC = () => {
       }
 
       if (authData.user) {
-        // Create clinic record first
+        console.log('User created successfully, creating clinic...')
+
+        // Create clinic record
         const { data: clinicData, error: clinicError } = await supabase
           .from('clinics')
           .insert({
             name: formData.clinicName,
             email: formData.email,
             subscription_status: 'trial',
-            trial_end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days trial
+            trial_end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
           })
           .select()
           .single()
+
+        console.log('Clinic creation result:', { clinicData, clinicError })
 
         if (clinicError) {
           console.error('Clinic creation error:', clinicError)
@@ -69,7 +78,7 @@ export const RegisterPage: React.FC = () => {
         }
 
         // Create clinic owner profile
-        const { error: profileError } = await supabase
+        const { data: profileData, error: profileError } = await supabase
           .from('clinic_users')
           .insert({
             user_id: authData.user.id,
@@ -77,12 +86,16 @@ export const RegisterPage: React.FC = () => {
             name: formData.clinicName + ' Admin',
             email: formData.email,
             role: 'owner',
-            language: i18n.language,
             is_active: true
           })
+          .select()
+          .single()
+
+        console.log('Profile creation result:', { profileData, profileError })
 
         if (profileError) {
           console.error('Profile creation error:', profileError)
+          throw new Error('Failed to create user profile')
         }
 
         toast({
@@ -93,6 +106,7 @@ export const RegisterPage: React.FC = () => {
         navigate('/login')
       }
     } catch (error: any) {
+      console.error('Registration error:', error)
       toast({
         title: t('auth.errors.registrationFailed'),
         description: error.message,
