@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useToast } from '@/hooks/use-toast'
 import { useTranslation } from 'react-i18next'
 import { LanguageToggle } from '@/components/LanguageToggle'
@@ -20,8 +19,7 @@ export const RegisterPage: React.FC = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    fullName: '',
-    role: ''
+    clinicName: ''
   })
   const [loading, setLoading] = useState(false)
 
@@ -53,14 +51,32 @@ export const RegisterPage: React.FC = () => {
       }
 
       if (authData.user) {
-        // Insert user profile data
+        // Create clinic record first
+        const { data: clinicData, error: clinicError } = await supabase
+          .from('clinics')
+          .insert({
+            name: formData.clinicName,
+            email: formData.email,
+            subscription_status: 'trial',
+            trial_end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days trial
+          })
+          .select()
+          .single()
+
+        if (clinicError) {
+          console.error('Clinic creation error:', clinicError)
+          throw new Error('Failed to create clinic')
+        }
+
+        // Create clinic owner profile
         const { error: profileError } = await supabase
           .from('clinic_users')
           .insert({
             user_id: authData.user.id,
-            name: formData.fullName,
+            clinic_id: clinicData.id,
+            name: formData.clinicName + ' Admin',
             email: formData.email,
-            role: formData.role,
+            role: 'owner',
             language: i18n.language,
             is_active: true
           })
@@ -97,21 +113,21 @@ export const RegisterPage: React.FC = () => {
         <Card className="shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-gray-900">
-              {t('auth.signUp')}
+              {t('auth.createClinicAccount')}
             </CardTitle>
             <CardDescription>
-              {t('auth.signUpDescription')}
+              {t('auth.clinicSignUpDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName">{t('auth.fullName')}</Label>
+                <Label htmlFor="clinicName">{t('auth.clinicName')}</Label>
                 <Input
-                  id="fullName"
-                  placeholder={t('auth.namePlaceholder')}
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                  id="clinicName"
+                  placeholder={t('auth.clinicNamePlaceholder')}
+                  value={formData.clinicName}
+                  onChange={(e) => setFormData({...formData, clinicName: e.target.value})}
                   required
                   disabled={loading}
                 />
@@ -128,24 +144,6 @@ export const RegisterPage: React.FC = () => {
                   required
                   disabled={loading}
                 />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="role">{t('auth.role')}</Label>
-                <Select 
-                  value={formData.role} 
-                  onValueChange={(value) => setFormData({...formData, role: value})}
-                  disabled={loading}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={t('auth.selectRole')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="doctor">{t('auth.doctor')}</SelectItem>
-                    <SelectItem value="optometrist">{t('auth.optometrist')}</SelectItem>
-                    <SelectItem value="secretary">{t('auth.secretary')}</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
               
               <div className="space-y-2">
@@ -175,14 +173,14 @@ export const RegisterPage: React.FC = () => {
                 />
               </div>
               
-              <Button type="submit" className="w-full" disabled={loading || !formData.role}>
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t('auth.creatingAccount')}
+                    {t('auth.creatingClinic')}
                   </>
                 ) : (
-                  t('auth.createAccount')
+                  t('auth.createClinicAccount')
                 )}
               </Button>
             </form>

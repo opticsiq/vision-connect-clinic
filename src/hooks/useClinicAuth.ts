@@ -26,7 +26,7 @@ export const useClinicAuth = () => {
         return
       }
 
-      // Check if user is admin (platform owner)
+      // Check if user is platform admin
       if (user.email === 'admin@clinic.com') {
         setClinicUser({
           id: user.id,

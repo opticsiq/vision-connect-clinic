@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useClinicAuth } from '@/hooks/useClinicAuth'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +16,12 @@ export const RoleBasedLayout: React.FC = () => {
   const { clinicUser, loading } = useClinicAuth()
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login')
+    }
+  }, [user, loading, navigate])
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -28,7 +34,6 @@ export const RoleBasedLayout: React.FC = () => {
   }
 
   if (!user) {
-    navigate('/login')
     return null
   }
 
@@ -39,7 +44,7 @@ export const RoleBasedLayout: React.FC = () => {
           <CardHeader>
             <CardTitle>Account Setup Required</CardTitle>
             <CardDescription>
-              Your account is not associated with any clinic. Please contact support.
+              Your account is not properly configured. Please contact support or try signing up again.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -63,7 +68,7 @@ export const RoleBasedLayout: React.FC = () => {
                 Optometry Clinic Management
               </h1>
               <p className="text-sm text-gray-500">
-                {clinicUser.role.charAt(0).toUpperCase() + clinicUser.role.slice(1)} Dashboard
+                {clinicUser.role === 'owner' ? 'Clinic Admin' : clinicUser.role.charAt(0).toUpperCase() + clinicUser.role.slice(1)} Dashboard
               </p>
             </div>
             <div className="flex items-center space-x-4">
