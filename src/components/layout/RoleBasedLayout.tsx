@@ -2,6 +2,7 @@
 import React from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useClinicAuth } from '@/hooks/useClinicAuth'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { AdminDashboard } from '@/components/dashboards/AdminDashboard'
@@ -9,12 +10,11 @@ import { ClinicOwnerDashboard } from '@/components/dashboards/ClinicOwnerDashboa
 import { SecretaryDashboard } from '@/components/dashboards/SecretaryDashboard'
 import { DoctorDashboard } from '@/components/dashboards/DoctorDashboard'
 import { OptometristDashboard } from '@/components/dashboards/OptometristDashboard'
-import { ClinicRegistration } from '@/components/auth/ClinicRegistration'
-import { AuthTest } from '@/components/AuthTest'
 
 export const RoleBasedLayout: React.FC = () => {
   const { user, signOut } = useAuth()
   const { clinicUser, loading } = useClinicAuth()
+  const navigate = useNavigate()
 
   if (loading) {
     return (
@@ -28,27 +28,8 @@ export const RoleBasedLayout: React.FC = () => {
   }
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl space-y-6">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Optometry Clinic Management</h1>
-            <p className="text-gray-600 mt-2">Professional clinic management system</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h2 className="text-xl font-semibold mb-4">New Clinic Registration</h2>
-              <ClinicRegistration />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Existing User Login</h2>
-              <AuthTest />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    navigate('/login')
+    return null
   }
 
   if (!clinicUser) {
